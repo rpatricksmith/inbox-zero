@@ -12,6 +12,7 @@ export const GET = withEmailAccount(
     const result = await getData({ emailAccountId });
     return NextResponse.json(result);
   },
+  { requestTiming: {} },
 );
 
 async function getData({ emailAccountId }: { emailAccountId: string }) {

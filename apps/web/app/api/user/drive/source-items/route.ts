@@ -12,16 +12,20 @@ import type { Logger } from "@/utils/logger";
 export type GetDriveSourceItemsResponse = Awaited<ReturnType<typeof getData>>;
 export type { DriveSourceItem } from "@/utils/drive/source-items";
 
-export const GET = withEmailAccount(async (request) => {
-  const { emailAccountId } = request.auth;
+export const GET = withEmailAccount(
+  "user/drive/source-items",
+  async (request) => {
+    const { emailAccountId } = request.auth;
 
-  const result = await getData({
-    emailAccountId,
-    logger: request.logger,
-  });
+    const result = await getData({
+      emailAccountId,
+      logger: request.logger,
+    });
 
-  return NextResponse.json(result);
-});
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getData({
   emailAccountId,

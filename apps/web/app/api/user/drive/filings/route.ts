@@ -17,18 +17,22 @@ export type GetFilingsQuery = z.infer<typeof querySchema>;
 
 export type GetFilingsResponse = Awaited<ReturnType<typeof getFilings>>;
 
-export const GET = withEmailAccount(async (request) => {
-  const { emailAccountId } = request.auth;
+export const GET = withEmailAccount(
+  "user/drive/filings",
+  async (request) => {
+    const { emailAccountId } = request.auth;
 
-  const { searchParams } = new URL(request.url);
-  const query = querySchema.parse({
-    limit: searchParams.get("limit"),
-    offset: searchParams.get("offset"),
-  });
+    const { searchParams } = new URL(request.url);
+    const query = querySchema.parse({
+      limit: searchParams.get("limit"),
+      offset: searchParams.get("offset"),
+    });
 
-  const result = await getFilings({ emailAccountId, ...query });
-  return NextResponse.json(result);
-});
+    const result = await getFilings({ emailAccountId, ...query });
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getFilings({
   emailAccountId,
