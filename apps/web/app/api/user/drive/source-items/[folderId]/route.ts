@@ -16,24 +16,28 @@ export type GetDriveSourceChildrenResponse = Awaited<
   ReturnType<typeof getData>
 >;
 
-export const GET = withEmailAccount(async (request, context) => {
-  const { emailAccountId } = request.auth;
-  const { folderId } = await context.params;
-  const { searchParams } = new URL(request.url);
+export const GET = withEmailAccount(
+  "user/drive/source-items/[folderId]",
+  async (request, context) => {
+    const { emailAccountId } = request.auth;
+    const { folderId } = await context.params;
+    const { searchParams } = new URL(request.url);
 
-  const { driveConnectionId } = getDriveSourceChildrenQuerySchema.parse({
-    driveConnectionId: searchParams.get("driveConnectionId"),
-  });
+    const { driveConnectionId } = getDriveSourceChildrenQuerySchema.parse({
+      driveConnectionId: searchParams.get("driveConnectionId"),
+    });
 
-  const result = await getData({
-    emailAccountId,
-    driveConnectionId,
-    folderId,
-    logger: request.logger,
-  });
+    const result = await getData({
+      emailAccountId,
+      driveConnectionId,
+      folderId,
+      logger: request.logger,
+    });
 
-  return NextResponse.json(result);
-});
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getData({
   emailAccountId,
@@ -60,17 +64,27 @@ async function getData({
     driveConnection,
     logger,
   );
-  const [folders, files] = await Promise.all([
-    provider.listFolders(folderId),
-    provider.listFiles(folderId, { mimeTypes: ["application/pdf"] }),
-  ]);
 
-  return {
-    items: buildDriveSourceItems({
+  try {
+    const [folders, files] = await Promise.all([
+      provider.listFolders(folderId),
+      provider.listFiles(folderId, { mimeTypes: ["application/pdf"] }),
+    ]);
+
+    return {
+      items: buildDriveSourceItems({
+        driveConnectionId: driveConnection.id,
+        provider: driveConnection.provider,
+        folders,
+        files,
+      }),
+    };
+  } catch (error) {
+    logger.error("Error listing source items", {
+      folderId,
       driveConnectionId: driveConnection.id,
-      provider: driveConnection.provider,
-      folders,
-      files,
-    }),
-  };
+      error,
+    });
+    throw new SafeError("Failed to list source items from drive");
+  }
 }

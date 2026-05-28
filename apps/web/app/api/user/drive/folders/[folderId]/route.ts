@@ -11,25 +11,29 @@ export type GetSubfoldersQuery = z.infer<typeof querySchema>;
 
 export type GetSubfoldersResponse = Awaited<ReturnType<typeof getData>>;
 
-export const GET = withEmailAccount(async (request, context) => {
-  const { emailAccountId } = request.auth;
-  const { folderId } = await context.params;
+export const GET = withEmailAccount(
+  "user/drive/folders/[folderId]",
+  async (request, context) => {
+    const { emailAccountId } = request.auth;
+    const { folderId } = await context.params;
 
-  const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
 
-  const { driveConnectionId } = querySchema.parse({
-    driveConnectionId: searchParams.get("driveConnectionId"),
-  });
+    const { driveConnectionId } = querySchema.parse({
+      driveConnectionId: searchParams.get("driveConnectionId"),
+    });
 
-  const result = await getData({
-    driveConnectionId,
-    emailAccountId,
-    folderId,
-    logger: request.logger,
-  });
+    const result = await getData({
+      driveConnectionId,
+      emailAccountId,
+      folderId,
+      logger: request.logger,
+    });
 
-  return NextResponse.json(result);
-});
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getData({
   driveConnectionId,
@@ -56,15 +60,25 @@ async function getData({
     driveConnection,
     logger,
   );
-  const subfolders = await provider.listFolders(folderId);
 
-  return {
-    folders: subfolders.map((folder) => ({
-      id: folder.id,
-      name: folder.name,
-      path: folder.path || folder.name,
+  try {
+    const subfolders = await provider.listFolders(folderId);
+
+    return {
+      folders: subfolders.map((folder) => ({
+        id: folder.id,
+        name: folder.name,
+        path: folder.path || folder.name,
+        driveConnectionId: driveConnection.id,
+        provider: driveConnection.provider,
+      })),
+    };
+  } catch (error) {
+    logger.error("Error listing subfolders", {
+      folderId,
       driveConnectionId: driveConnection.id,
-      provider: driveConnection.provider,
-    })),
-  };
+      error,
+    });
+    throw new SafeError("Failed to list subfolders from drive");
+  }
 }
