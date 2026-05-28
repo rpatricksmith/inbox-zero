@@ -18,5 +18,26 @@
   "spec": {
     "saved_at": "2026-05-28T23:47:00.400Z",
     "hash": "sha256:29ceddb3cc8aad7918f7fcb24d364513733541d2166b8f9e1fa3763693c8658b"
-  }
+  },
+  "build_started_at": "2026-05-28T23:50:21.665Z",
+  "build_agent": "ana-build",
+  "build-report": {
+    "saved_at": "2026-05-28T23:54:29.291Z",
+    "hash": "sha256:c0f1e61d7d5d725b9788bb7ea56d123d7b0a99095a7604f4b6115335918f89b1"
+  },
+  "build-data": {
+    "saved_at": "2026-05-28T23:54:29.291Z",
+    "hash": "sha256:9c9e6cc226621f68f74a4c426662ea39ff9bc36ff170c895a74ddaa18c7b4e11"
+  },
+  "modules_touched": [
+    "apps/web/app/api/user/drive/connections/route.ts",
+    "apps/web/app/api/user/drive/filings/route.ts",
+    "apps/web/app/api/user/drive/folders/[folderId]/route.ts",
+    "apps/web/app/api/user/drive/folders/route.ts",
+    "apps/web/app/api/user/drive/preview/attachments/route.ts",
+    "apps/web/app/api/user/drive/preview/route.ts",
+    "apps/web/app/api/user/drive/source-items/[folderId]/route.ts",
+    "apps/web/app/api/user/drive/source-items/route.ts"
+  ],
+  "commit_hygiene": []
 }
