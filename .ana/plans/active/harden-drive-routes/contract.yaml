@@ -1,0 +1,169 @@
+version: "1.0"
+sealed_by: "AnaPlan"
+feature: "Harden Drive API routes with middleware patterns and error handling"
+
+assertions:
+  # AC1 + AC2: Scope strings and requestTiming on all 8 routes
+  - id: A001
+    says: "The connections route identifies itself for logging and timing"
+    block: "connections route has scope and requestTiming"
+    target: "connections/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/connections"
+
+  - id: A002
+    says: "The filings route identifies itself for logging and timing"
+    block: "filings route has scope and requestTiming"
+    target: "filings/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/filings"
+
+  - id: A003
+    says: "The folders route identifies itself for logging and timing"
+    block: "folders route has scope and requestTiming"
+    target: "folders/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/folders"
+
+  - id: A004
+    says: "The subfolders route identifies itself for logging and timing"
+    block: "folders/[folderId] route has scope and requestTiming"
+    target: "folders/[folderId]/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/folders/[folderId]"
+
+  - id: A005
+    says: "The source items route identifies itself for logging and timing"
+    block: "source-items route has scope and requestTiming"
+    target: "source-items/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/source-items"
+
+  - id: A006
+    says: "The source items children route identifies itself for logging and timing"
+    block: "source-items/[folderId] route has scope and requestTiming"
+    target: "source-items/[folderId]/route.ts withEmailAccount call"
+    matcher: "contains"
+    value: "user/drive/source-items/[folderId]"
+
+  - id: A007
+    says: "The filing preview route identifies itself for logging and timing"
+    block: "preview route has scope and requestTiming"
+    target: "preview/route.ts withEmailProvider call"
+    matcher: "contains"
+    value: "user/drive/preview"
+
+  - id: A008
+    says: "The attachments preview route identifies itself for logging and timing"
+    block: "preview/attachments route has scope and requestTiming"
+    target: "preview/attachments/route.ts withEmailProvider call"
+    matcher: "contains"
+    value: "user/drive/preview/attachments"
+
+  - id: A009
+    says: "All 8 routes have request timing enabled"
+    block: "all routes have requestTiming"
+    target: "drive route files requestTiming option"
+    matcher: "equals"
+    value: 8
+
+  # AC3: folders/[folderId] error handling
+  - id: A010
+    says: "Subfolder listing failures return a structured error instead of crashing"
+    block: "folders/[folderId] handles provider errors gracefully"
+    target: "folders/[folderId] provider.listFolders error"
+    matcher: "exists"
+
+  - id: A011
+    says: "Subfolder listing failures are logged with context for debugging"
+    block: "folders/[folderId] logs provider errors"
+    target: "folders/[folderId] logger.error call on provider failure"
+    matcher: "exists"
+
+  - id: A012
+    says: "Subfolder listing failures return HTTP 500"
+    block: "folders/[folderId] returns 500 on provider error"
+    target: "folders/[folderId] error response status"
+    matcher: "equals"
+    value: 500
+
+  # AC4: source-items/[folderId] error handling
+  - id: A013
+    says: "Source item listing failures return a structured error instead of crashing"
+    block: "source-items/[folderId] handles provider errors gracefully"
+    target: "source-items/[folderId] provider error"
+    matcher: "exists"
+
+  - id: A014
+    says: "Source item listing failures are logged with context for debugging"
+    block: "source-items/[folderId] logs provider errors"
+    target: "source-items/[folderId] logger.error call on provider failure"
+    matcher: "exists"
+
+  - id: A015
+    says: "Source item listing failures return HTTP 500"
+    block: "source-items/[folderId] returns 500 on provider error"
+    target: "source-items/[folderId] error response status"
+    matcher: "equals"
+    value: 500
+
+  # AC5: preview/attachments error handling
+  - id: A016
+    says: "Attachment preview failures return a structured error instead of crashing"
+    block: "preview/attachments handles provider errors gracefully"
+    target: "preview/attachments emailProvider.getMessagesWithAttachments error"
+    matcher: "exists"
+
+  - id: A017
+    says: "Attachment preview failures are logged with context for debugging"
+    block: "preview/attachments logs provider errors"
+    target: "preview/attachments logger.error call on provider failure"
+    matcher: "exists"
+
+  - id: A018
+    says: "Attachment preview failures return HTTP 500"
+    block: "preview/attachments returns 500 on provider error"
+    target: "preview/attachments error response status"
+    matcher: "equals"
+    value: 500
+
+  # AC6: No response shape changes
+  - id: A019
+    says: "Existing API response types are unchanged so client code keeps working"
+    block: "response types are preserved"
+    target: "exported response type signatures"
+    matcher: "not_equals"
+    value: "changed"
+
+  # AC7 + AC8: Build and tests
+  - id: A020
+    says: "The project builds without type errors"
+    block: "project builds successfully"
+    target: "build exit code"
+    matcher: "equals"
+    value: 0
+
+  - id: A021
+    says: "All existing tests continue to pass"
+    block: "test suite passes"
+    target: "test results passed count"
+    matcher: "equals"
+    value: 3785
+
+file_changes:
+  - path: "apps/web/app/api/user/drive/connections/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/filings/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/folders/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/folders/[folderId]/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/source-items/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/source-items/[folderId]/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/preview/route.ts"
+    action: modify
+  - path: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    action: modify
