@@ -29,10 +29,16 @@ description: "Invoke when debugging failures, diagnosing unexpected behavior, or
 - **Webhook signature verification fails with "No signatures found matching the expected signature" even though the signing secret is correct** — Stripe signature verification requires the RAW request body, not parsed JSON. In Next.js App Router: use `request.text()`. In Express: use `express.raw({ type: "application/json" })` on the webhook route. Body parsers (like `express.json()`) modify the body and break verification.
 
 ## Rules
-*Not yet captured. This section grows from real debugging sessions.*
+- **Dynamic Prisma transactions exist but are banned** — `utils/digest/summary-limit.ts` and `app/api/cron/automation-jobs/route.ts` use `$transaction(async (tx) => ...)` despite it being prohibited. Do not extend this pattern. Use batch transactions only.
+- **Prisma enums must come from `@/generated/prisma/enums`** — CI enforces this with `check-enums`. Importing from `@prisma/client` will pass locally but fail in CI.
+- **Prisma client has invisible extensions** — `utils/prisma.ts` uses `$extends()` for `encryptedTokens` and `auditPrismaQueries`, then casts back to `PrismaClient`. Extension methods work at runtime but aren't in the base type. If adding extensions, ensure the cast chain remains valid.
+- **Prompt file ↔ DB rules get out of sync** — Users write rules in the prompt file, those get parsed into DB rules, but changes to DB rules don't always flow back. When out of sync, behavior is confusing — user sees one thing in the prompt file but the AI acts on the DB rules. Known tech debt.
+- **Anthropic provider fails on prompt-to-rules** — The tool schema has 87 optional params which exceeds Anthropic's 24-param limit. If a user sets Anthropic as their model and tries to convert a prompt file to rules, it breaks. Issue #2323.
+- **Google and Outlook webhook error spikes** — Provider error spikes happen. If webhook processing starts failing in bursts, check the provider error rate before assuming it's our code. Recent work on backoff and error handling in the email watch/webhook flow.
+- **Self-hosted environments hit performance issues** — Slow validate-email-account middleware and Redis rate-limit state warnings. Issue #2227. Not always reproducible in the Vercel-hosted version.
 
 ## Gotchas
-*Not yet captured. Add as you discover them during development.*
+- **CI fails with 'server action export check' or 'Prisma enum import check'** — These are custom linters. Server actions must follow the export pattern. Prisma enums must be imported from `@/generated/prisma/enums`, not from `@prisma/client`.
 
 ## Examples
 *Not yet captured. Add diagnostic workflows showing how to investigate common failures.*

@@ -17,8 +17,9 @@ description: "Invoke when working with database queries, schema changes, migrati
 - Paginate all list queries. Never return unbounded results from `findMany()`. Use `take` + `skip` or cursor-based pagination. An unbounded query on a table with 100K rows returns all 100K rows into memory.
 
 ## Rules
-- Import the database client from a single shared module. Avoid instantiating new clients in route handlers or service functions — each instance opens its own connection pool.
-- Wrap multi-step mutations in a transaction. If any step can fail, partial writes corrupt data — all steps succeed or all roll back.
+- Import the database client from `@/utils/prisma` — never instantiate a new client. The singleton includes `encryptedTokens` and `auditPrismaQueries` extensions.
+- Never use dynamic Prisma transactions (`prisma.$transaction(async (tx) => ...)`). Use batch transactions only (`prisma.$transaction([query1, query2])`). This is an enforced project convention.
+- Import Prisma enums from `@/generated/prisma/enums`, not from `@prisma/client`. CI enforces this with `check-enums`. Import the client from `@/generated/prisma/client` for types.
 - Avoid querying the database inside loops — use eager loading or joins for related data. Each loop iteration is a separate round trip.
 - Select only the fields you need. Avoid fetching entire records when the consumer needs a few columns.
 - Always scope data queries to the authorized context. Filter by the authenticated user, organization, or tenant — don't rely solely on API-layer checks to prevent unauthorized access. A missing `where` clause is an IDOR vulnerability.

@@ -20,6 +20,10 @@ description: "Invoke when writing tests, reviewing test quality, or setting up t
 - Cover the error path, not just the happy path. For each feature test, write at least one test for invalid input, missing data, or service failure.
 - Assert on specific expected values from real inputs. `expect(status).toBe(200)` not `expect(status).toBeDefined()`. A test that passes regardless of whether the feature works catches nothing. Never write tautological tests — `expect(true).toBe(true)` proves nothing. If you can't determine the specific expected value, read the contract's `matcher`/`value` fields before falling back to a weak assertion.
 - Never weaken a test to make it pass. If a test fails, fix the code or fix the expectation — never broaden assertions or catch exceptions to force green.
+- Mock Prisma with `vi.mock("@/utils/prisma")` which auto-resolves to `utils/__mocks__/prisma.ts` (uses `vitest-mock-extended` `mockDeep`). Reset happens automatically in `beforeEach`.
+- For API route tests, mock the middleware chain using helpers from `@/__tests__/helpers` (e.g., `createWithErrorTestMiddleware`, `createWithAuthTestMiddleware`, `createWithEmailAccountTestMiddleware`). These inject a test logger and auth context.
+- Use `vi.clearAllMocks()` in `beforeEach` for cleanup. The global setup already mocks `server-only`, `next/server`'s `after()`, and QStash verification.
+- AI/eval tests live in `__tests__/eval/` and must be run with `pnpm --filter inbox-zero-ai test-ai`, not `pnpm test`. Keep them separate — they hit real LLM APIs and have different cost/timing characteristics.
 
 ## Gotchas
 - Vitest defaults to watch mode. Always pass `--run` in CI and non-interactive environments (e.g., `pnpm run test -- --run`).

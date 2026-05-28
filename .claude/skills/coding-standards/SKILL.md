@@ -10,7 +10,7 @@ description: "Invoke when implementing features, writing code, or reviewing code
 - Functions: PascalCase (53%, 1518 sampled)
 - Classes: PascalCase (29%)
 - Files: PascalCase (79%, 750 sampled)
-- Imports: relative (100%)
+- Imports: path aliases (`@/`) (near 100%)
 - Indentation: spaces, 2 wide
 - Error handling: exceptions (nextjs)
 - Data fetching: swr
@@ -19,7 +19,6 @@ description: "Invoke when implementing features, writing code, or reviewing code
 - UI: shadcn/ui (Tailwind)
 
 ### Library Rules
-- All local imports use `.js` extensions (`import { foo } from "./bar.js"`). TypeScript compiles without them but ESM resolution crashes at runtime.
 - Use `import type` for type-only imports, separate from value imports. Prevents runtime imports of pure types.
 - Default to Server Components. Only add `"use client"` when the component needs browser APIs, event handlers, or useState/useEffect. Data fetching belongs in Server Components — no useEffect waterfalls.
 
@@ -31,6 +30,8 @@ description: "Invoke when implementing features, writing code, or reviewing code
 - Never hardcode API keys, secrets, database URLs, or credentials. Use environment variables or a secrets manager.
 - Avoid disabling lint rules inline. When necessary, add a comment explaining why the disable is required.
 - Explicit return types on all exported functions. Internal helpers can use inference.
+- Use `SafeError` (from `utils/error.ts`) for errors that should surface a user-readable message to the client. All other errors are caught by middleware and reported to Sentry with a generic message.
+- Use `createScopedLogger('scope-name')` for module-level loggers. Enrich with `.with({})` for request context. Never use `console.log` directly.
 
 ## Gotchas
 - Next.js App Router components are Server Components by default. Add `'use client'` only when the component needs browser APIs, event handlers, or React hooks like useState/useEffect.

@@ -16,6 +16,9 @@ description: "Invoke when implementing API routes, request handling, middleware,
 - Server Components fetch data directly from service functions or the database. Route Handlers are for EXTERNAL clients (webhooks, mobile apps, third-party integrations). Never call your own Route Handlers from Server Components — that adds an unnecessary network hop.
 
 ## Rules
+- Use `withError` for public/unauthenticated routes, `withAuth` for user-level routes, `withEmailAccount` for email-account-scoped routes, `withEmailProvider` when the route needs to make email API calls. Always pass a scope string as the first argument: `withEmailAccount('labels', async (request) => { ... })`.
+- Server actions (mutations) use `actionClient` (email-account-scoped), `actionClientUser` (user-scoped), or `adminActionClient` from `utils/actions/safe-action.ts`. Each validates auth, sets audit context, and instruments with Sentry. Never create raw server actions without these clients.
+- Export the response type from GET route handlers for client-side type safety: `export type MyResponse = Awaited<ReturnType<typeof getData>>`.
 - Validate all input at the API boundary. Parse request bodies, query params, and path params with the project's validation library before any processing.
 - Return a consistent error response shape from every endpoint. Never leak stack traces, database errors, or internal paths in production responses.
 - Keep route handlers thin. Validation, then service call, then response. Business logic and data access belong in separate modules.
