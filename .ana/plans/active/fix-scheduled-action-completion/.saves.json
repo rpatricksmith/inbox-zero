@@ -33,5 +33,20 @@
     "apps/web/utils/scheduled-actions/executor.test.ts",
     "apps/web/utils/scheduled-actions/executor.ts"
   ],
-  "commit_hygiene": []
+  "commit_hygiene": [],
+  "verify_started_at": "2026-05-29T00:16:49.501Z",
+  "verify_agent": "ana-verify",
+  "pre-check": {
+    "seal": "INTACT",
+    "seal_hash": "sha256:7865482f14488257f837b15d68520fa803e852b449d632e3734be8af795c2cd8",
+    "run_at": "2026-05-29T00:20:50.391Z"
+  },
+  "verify-report": {
+    "saved_at": "2026-05-29T00:20:50.428Z",
+    "hash": "sha256:b5885f0ec3e8195b3de8bb6ba4aec5784c849b79f36fa1dc070b3a62625a52cc"
+  },
+  "verify-data": {
+    "saved_at": "2026-05-29T00:20:50.428Z",
+    "hash": "sha256:743a83f10b559b8a73a1bf7776b1b2bc6649c2a1658b7a9d434996fef2ebc9be"
+  }
 }
