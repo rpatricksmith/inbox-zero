@@ -1,0 +1,45 @@
+schema: 1
+findings:
+  - category: code
+    summary: "SafeError thrown without statusCode — returns 400 instead of contract-specified 500"
+    file: "apps/web/app/api/user/drive/folders/[folderId]/route.ts"
+    line: 82
+    severity: risk
+    suggested_action: scope
+    related_assertions: ["A012", "A015", "A018"]
+  - category: code
+    summary: "Same SafeError missing statusCode in source-items/[folderId]"
+    file: "apps/web/app/api/user/drive/source-items/[folderId]/route.ts"
+    line: 89
+    severity: risk
+    suggested_action: scope
+    related_assertions: ["A015"]
+  - category: code
+    summary: "Same SafeError missing statusCode in preview/attachments"
+    file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    line: 100
+    severity: risk
+    suggested_action: scope
+    related_assertions: ["A018"]
+  - category: code
+    summary: "preview/route.ts getMessagesWithAttachments call is bare — no error handling"
+    file: "apps/web/app/api/user/drive/preview/route.ts"
+    line: 109
+    severity: observation
+    suggested_action: scope
+  - category: code
+    summary: "SafeError adds isKnownError:true to response shape — differs from spec's {error} pattern"
+    file: "apps/web/utils/middleware.ts"
+    line: 208
+    severity: observation
+    suggested_action: accept
+  - category: upstream
+    summary: "Contract A020 unverifiable — type-check build requires env vars not available in worktree"
+    severity: observation
+    suggested_action: accept
+    related_assertions: ["A020"]
+  - category: upstream
+    summary: "Spec Gotchas section internally conflicted with File Changes section on error pattern"
+    severity: observation
+    suggested_action: monitor
+    related_assertions: ["A012", "A015", "A018"]

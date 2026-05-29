@@ -39,5 +39,20 @@
     "apps/web/app/api/user/drive/source-items/[folderId]/route.ts",
     "apps/web/app/api/user/drive/source-items/route.ts"
   ],
-  "commit_hygiene": []
+  "commit_hygiene": [],
+  "verify_started_at": "2026-05-29T00:00:07.125Z",
+  "verify_agent": "ana-verify",
+  "pre-check": {
+    "seal": "INTACT",
+    "seal_hash": "sha256:4667ed67f918e2dabbb2db5b1ba62e31684904ef56a0b143581ada69adb952d8",
+    "run_at": "2026-05-29T00:03:17.351Z"
+  },
+  "verify-report": {
+    "saved_at": "2026-05-29T00:03:17.390Z",
+    "hash": "sha256:f478cf8d985ee2489c8d8634d4e90f7f5d1e0ad9aa4bc5f19602bb5ddd972bd9"
+  },
+  "verify-data": {
+    "saved_at": "2026-05-29T00:03:17.390Z",
+    "hash": "sha256:0800c9099d0c8755fd7c30123237436de01dc08fd652367825f0252ebeba4c73"
+  }
 }
