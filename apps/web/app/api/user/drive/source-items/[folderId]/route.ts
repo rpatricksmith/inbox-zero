@@ -85,6 +85,6 @@ async function getData({
       driveConnectionId: driveConnection.id,
       error,
     });
-    throw new SafeError("Failed to list source items from drive");
+    throw new SafeError("Failed to list source items from drive", 500);
   }
 }

@@ -97,7 +97,7 @@ async function getAttachmentsData({
     logger.error("Error fetching messages with attachments", {
       error,
     });
-    throw new SafeError("Failed to fetch messages with attachments");
+    throw new SafeError("Failed to fetch messages with attachments", 500);
   }
 
   const attachments = extractAttachmentPreviews(messages, MAX_ATTACHMENTS);

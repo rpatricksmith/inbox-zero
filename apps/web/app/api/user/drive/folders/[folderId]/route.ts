@@ -79,6 +79,6 @@ async function getData({
       driveConnectionId: driveConnection.id,
       error,
     });
-    throw new SafeError("Failed to list subfolders from drive");
+    throw new SafeError("Failed to list subfolders from drive", 500);
   }
 }
