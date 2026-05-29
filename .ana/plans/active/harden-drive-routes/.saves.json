@@ -22,12 +22,24 @@
   "build_started_at": "2026-05-28T23:50:21.665Z",
   "build_agent": "ana-build",
   "build-report": {
-    "saved_at": "2026-05-28T23:54:29.291Z",
-    "hash": "sha256:c0f1e61d7d5d725b9788bb7ea56d123d7b0a99095a7604f4b6115335918f89b1"
+    "saved_at": "2026-05-29T00:09:30.961Z",
+    "hash": "sha256:7708ba29c6d09aa102a625a77992bba2c875c46e75593e1e89294e5bfd1ec3f3",
+    "history": [
+      {
+        "saved_at": "2026-05-28T23:54:29.291Z",
+        "hash": "sha256:c0f1e61d7d5d725b9788bb7ea56d123d7b0a99095a7604f4b6115335918f89b1"
+      }
+    ]
   },
   "build-data": {
-    "saved_at": "2026-05-28T23:54:29.291Z",
-    "hash": "sha256:9c9e6cc226621f68f74a4c426662ea39ff9bc36ff170c895a74ddaa18c7b4e11"
+    "saved_at": "2026-05-29T00:09:30.961Z",
+    "hash": "sha256:567d40ac1186ca08b7acf6a04d6641fbdf848a7a3fa0d9f04187fcd10a2b456a",
+    "history": [
+      {
+        "saved_at": "2026-05-28T23:54:29.291Z",
+        "hash": "sha256:9c9e6cc226621f68f74a4c426662ea39ff9bc36ff170c895a74ddaa18c7b4e11"
+      }
+    ]
   },
   "modules_touched": [
     "apps/web/app/api/user/drive/connections/route.ts",
