@@ -1,0 +1,5 @@
+schema: 1
+concerns:
+  - summary: "Type-check build cannot run locally due to missing env vars (INTERNAL_API_KEY, NEXT_PUBLIC_BASE_URL, etc.)"
+    severity: observation
+    suggested_action: accept

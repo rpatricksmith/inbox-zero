@@ -1,0 +1,26 @@
+schema: 1
+findings:
+  - category: code
+    summary: "preview/attachments error logging lacks contextual fields (emailAccountId) unlike the other two error handlers"
+    file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    line: 97
+    severity: debt
+    suggested_action: scope
+    related_assertions: ["A017"]
+  - category: code
+    summary: "preview/route.ts has bare getMessagesWithAttachments call at line 109 — same unprotected pattern that was fixed in preview/attachments"
+    file: "apps/web/app/api/user/drive/preview/route.ts"
+    line: 109
+    severity: risk
+    suggested_action: scope
+  - category: code
+    summary: "preview/attachments uses let + try/catch assignment pattern instead of extracting provider call to a helper"
+    file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    line: 88
+    severity: observation
+    suggested_action: accept
+  - category: upstream
+    summary: "Contract A020 unverifiable — type-check build requires env vars not available in worktree"
+    severity: observation
+    suggested_action: accept
+    related_assertions: ["A020"]

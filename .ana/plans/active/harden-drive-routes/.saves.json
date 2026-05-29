@@ -18,5 +18,65 @@
   "spec": {
     "saved_at": "2026-05-28T23:47:00.400Z",
     "hash": "sha256:29ceddb3cc8aad7918f7fcb24d364513733541d2166b8f9e1fa3763693c8658b"
+  },
+  "build_started_at": "2026-05-29T00:12:53.280Z",
+  "build_agent": "ana-build",
+  "build-report": {
+    "saved_at": "2026-05-29T00:09:30.961Z",
+    "hash": "sha256:7708ba29c6d09aa102a625a77992bba2c875c46e75593e1e89294e5bfd1ec3f3",
+    "history": [
+      {
+        "saved_at": "2026-05-28T23:54:29.291Z",
+        "hash": "sha256:c0f1e61d7d5d725b9788bb7ea56d123d7b0a99095a7604f4b6115335918f89b1"
+      }
+    ]
+  },
+  "build-data": {
+    "saved_at": "2026-05-29T00:09:30.961Z",
+    "hash": "sha256:567d40ac1186ca08b7acf6a04d6641fbdf848a7a3fa0d9f04187fcd10a2b456a",
+    "history": [
+      {
+        "saved_at": "2026-05-28T23:54:29.291Z",
+        "hash": "sha256:9c9e6cc226621f68f74a4c426662ea39ff9bc36ff170c895a74ddaa18c7b4e11"
+      }
+    ]
+  },
+  "modules_touched": [
+    "apps/web/app/api/user/drive/connections/route.ts",
+    "apps/web/app/api/user/drive/filings/route.ts",
+    "apps/web/app/api/user/drive/folders/[folderId]/route.ts",
+    "apps/web/app/api/user/drive/folders/route.ts",
+    "apps/web/app/api/user/drive/preview/attachments/route.ts",
+    "apps/web/app/api/user/drive/preview/route.ts",
+    "apps/web/app/api/user/drive/source-items/[folderId]/route.ts",
+    "apps/web/app/api/user/drive/source-items/route.ts"
+  ],
+  "commit_hygiene": [],
+  "verify_started_at": "2026-05-29T00:00:07.125Z",
+  "verify_agent": "ana-verify",
+  "pre-check": {
+    "seal": "INTACT",
+    "seal_hash": "sha256:4667ed67f918e2dabbb2db5b1ba62e31684904ef56a0b143581ada69adb952d8",
+    "run_at": "2026-05-29T00:16:54.282Z"
+  },
+  "verify-report": {
+    "saved_at": "2026-05-29T00:16:54.338Z",
+    "hash": "sha256:72638e4e936134f814e2a356faa9641885f8cce5b1885754e9d8d9b69ad5f788",
+    "history": [
+      {
+        "saved_at": "2026-05-29T00:03:17.390Z",
+        "hash": "sha256:f478cf8d985ee2489c8d8634d4e90f7f5d1e0ad9aa4bc5f19602bb5ddd972bd9"
+      }
+    ]
+  },
+  "verify-data": {
+    "saved_at": "2026-05-29T00:16:54.342Z",
+    "hash": "sha256:bebb130d08c6b09f33159be43884cb07f29c19ac3046287a07859d305fea4935",
+    "history": [
+      {
+        "saved_at": "2026-05-29T00:03:17.390Z",
+        "hash": "sha256:0800c9099d0c8755fd7c30123237436de01dc08fd652367825f0252ebeba4c73"
+      }
+    ]
   }
 }

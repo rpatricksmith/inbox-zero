@@ -1,0 +1,13 @@
+schema: 1
+concerns:
+  - summary: "Type-check build cannot run locally due to missing env vars"
+    severity: observation
+    suggested_action: accept
+  - summary: "preview/attachments error logging has less context than other error handlers"
+    file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    severity: debt
+    suggested_action: monitor
+  - summary: "preview/route.ts has unprotected getMessagesWithAttachments call"
+    file: "apps/web/app/api/user/drive/preview/route.ts"
+    severity: risk
+    suggested_action: scope

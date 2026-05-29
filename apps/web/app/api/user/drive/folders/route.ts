@@ -12,13 +12,17 @@ export type FolderItem = GetDriveFoldersResponse["availableFolders"][number] & {
 };
 export type SavedFolder = GetDriveFoldersResponse["savedFolders"][number];
 
-export const GET = withEmailAccount(async (request) => {
-  const logger = request.logger;
-  const { emailAccountId } = request.auth;
+export const GET = withEmailAccount(
+  "user/drive/folders",
+  async (request) => {
+    const logger = request.logger;
+    const { emailAccountId } = request.auth;
 
-  const result = await getData({ emailAccountId, logger });
-  return NextResponse.json(result);
-});
+    const result = await getData({ emailAccountId, logger });
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getData({
   emailAccountId,

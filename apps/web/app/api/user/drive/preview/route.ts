@@ -27,17 +27,21 @@ export type GetFilingPreviewResponse = Awaited<
 const MAX_MESSAGES_TO_FETCH = 20;
 const MAX_FILINGS = 3;
 
-export const GET = withEmailProvider(async (request) => {
-  const { emailAccountId } = request.auth;
+export const GET = withEmailProvider(
+  "user/drive/preview",
+  async (request) => {
+    const { emailAccountId } = request.auth;
 
-  const result = await getPreviewData({
-    emailAccountId,
-    emailProvider: request.emailProvider,
-    logger: request.logger,
-  });
+    const result = await getPreviewData({
+      emailAccountId,
+      emailProvider: request.emailProvider,
+      logger: request.logger,
+    });
 
-  return NextResponse.json(result);
-});
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getPreviewData({
   emailAccountId,

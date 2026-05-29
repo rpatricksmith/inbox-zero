@@ -27,17 +27,21 @@ export type GetAttachmentsPreviewResponse = Awaited<
 const MAX_MESSAGES_TO_FETCH = 20;
 const MAX_ATTACHMENTS = 3;
 
-export const GET = withEmailProvider(async (request) => {
-  const { emailAccountId } = request.auth;
+export const GET = withEmailProvider(
+  "user/drive/preview/attachments",
+  async (request) => {
+    const { emailAccountId } = request.auth;
 
-  const result = await getAttachmentsData({
-    emailAccountId,
-    emailProvider: request.emailProvider,
-    logger: request.logger,
-  });
+    const result = await getAttachmentsData({
+      emailAccountId,
+      emailProvider: request.emailProvider,
+      logger: request.logger,
+    });
 
-  return NextResponse.json(result);
-});
+    return NextResponse.json(result);
+  },
+  { requestTiming: {} },
+);
 
 async function getAttachmentsData({
   emailAccountId,
@@ -80,9 +84,21 @@ async function getAttachmentsData({
   }
 
   logger.info("Fetching recent messages for attachments preview");
-  const { messages } = await emailProvider.getMessagesWithAttachments({
-    maxResults: MAX_MESSAGES_TO_FETCH,
-  });
+
+  let messages: Awaited<
+    ReturnType<typeof emailProvider.getMessagesWithAttachments>
+  >["messages"];
+  try {
+    const result = await emailProvider.getMessagesWithAttachments({
+      maxResults: MAX_MESSAGES_TO_FETCH,
+    });
+    messages = result.messages;
+  } catch (error) {
+    logger.error("Error fetching messages with attachments", {
+      error,
+    });
+    throw new SafeError("Failed to fetch messages with attachments", 500);
+  }
 
   const attachments = extractAttachmentPreviews(messages, MAX_ATTACHMENTS);
 
