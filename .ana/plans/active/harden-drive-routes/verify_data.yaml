@@ -1,36 +1,22 @@
 schema: 1
 findings:
   - category: code
-    summary: "SafeError thrown without statusCode — returns 400 instead of contract-specified 500"
-    file: "apps/web/app/api/user/drive/folders/[folderId]/route.ts"
-    line: 82
-    severity: risk
-    suggested_action: scope
-    related_assertions: ["A012", "A015", "A018"]
-  - category: code
-    summary: "Same SafeError missing statusCode in source-items/[folderId]"
-    file: "apps/web/app/api/user/drive/source-items/[folderId]/route.ts"
-    line: 89
-    severity: risk
-    suggested_action: scope
-    related_assertions: ["A015"]
-  - category: code
-    summary: "Same SafeError missing statusCode in preview/attachments"
+    summary: "preview/attachments error logging lacks contextual fields (emailAccountId) unlike the other two error handlers"
     file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
-    line: 100
-    severity: risk
+    line: 97
+    severity: debt
     suggested_action: scope
-    related_assertions: ["A018"]
+    related_assertions: ["A017"]
   - category: code
-    summary: "preview/route.ts getMessagesWithAttachments call is bare — no error handling"
+    summary: "preview/route.ts has bare getMessagesWithAttachments call at line 109 — same unprotected pattern that was fixed in preview/attachments"
     file: "apps/web/app/api/user/drive/preview/route.ts"
     line: 109
-    severity: observation
+    severity: risk
     suggested_action: scope
   - category: code
-    summary: "SafeError adds isKnownError:true to response shape — differs from spec's {error} pattern"
-    file: "apps/web/utils/middleware.ts"
-    line: 208
+    summary: "preview/attachments uses let + try/catch assignment pattern instead of extracting provider call to a helper"
+    file: "apps/web/app/api/user/drive/preview/attachments/route.ts"
+    line: 88
     severity: observation
     suggested_action: accept
   - category: upstream
@@ -38,8 +24,3 @@ findings:
     severity: observation
     suggested_action: accept
     related_assertions: ["A020"]
-  - category: upstream
-    summary: "Spec Gotchas section internally conflicted with File Changes section on error pattern"
-    severity: observation
-    suggested_action: monitor
-    related_assertions: ["A012", "A015", "A018"]
