@@ -18,5 +18,20 @@
   "spec": {
     "saved_at": "2026-05-29T00:01:18.056Z",
     "hash": "sha256:8d8766d85d7188cba4e9e4f638e690c8951d167fb8f571e1d29f75818a27b9e0"
-  }
+  },
+  "build_started_at": "2026-05-29T00:03:50.753Z",
+  "build_agent": "ana-build",
+  "build-report": {
+    "saved_at": "2026-05-29T00:10:24.037Z",
+    "hash": "sha256:2a8055bc2eb295e138688ddf791e6b5a858b24dc44ef69a6696f0f6c84d52546"
+  },
+  "build-data": {
+    "saved_at": "2026-05-29T00:10:24.038Z",
+    "hash": "sha256:3c8f0c59b3086eb7bb19a661b5b8150e262391b3eb6cc05184a1d788e744ecf8"
+  },
+  "modules_touched": [
+    "apps/web/utils/scheduled-actions/executor.test.ts",
+    "apps/web/utils/scheduled-actions/executor.ts"
+  ],
+  "commit_hygiene": []
 }
