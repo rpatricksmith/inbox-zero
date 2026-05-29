@@ -1,0 +1,79 @@
+version: "1.0"
+sealed_by: "AnaPlan"
+feature: "Fix scheduled action failure leaving ExecutedRule stuck at APPLYING"
+
+assertions:
+  - id: A001
+    says: "A failed scheduled action triggers the rule completion check"
+    block: "should call checkAndCompleteExecutedRule after marking action as failed"
+    target: "prisma.scheduledAction.count"
+    matcher: "exists"
+
+  - id: A002
+    says: "When the only action fails, the rule is marked as errored"
+    block: "should transition ExecutedRule to ERROR when last action fails"
+    target: "prisma.executedRule.update.data.status"
+    matcher: "equals"
+    value: "ERROR"
+
+  - id: A003
+    says: "A failed rule includes a reason explaining what went wrong"
+    block: "should transition ExecutedRule to ERROR when last action fails"
+    target: "prisma.executedRule.update.data.reason"
+    matcher: "contains"
+    value: "scheduled actions failed"
+
+  - id: A004
+    says: "When some actions fail and others succeed, the rule is marked as errored"
+    block: "should transition ExecutedRule to ERROR when some actions fail and others succeed"
+    target: "prisma.executedRule.update.data.status"
+    matcher: "equals"
+    value: "ERROR"
+
+  - id: A005
+    says: "A mixed-result rule includes a failure reason"
+    block: "should transition ExecutedRule to ERROR when some actions fail and others succeed"
+    target: "prisma.executedRule.update.data.reason"
+    matcher: "contains"
+    value: "scheduled actions failed"
+
+  - id: A006
+    says: "When all actions succeed, the rule is marked as applied"
+    block: "should transition ExecutedRule to APPLIED when all actions succeed"
+    target: "prisma.executedRule.update.data.status"
+    matcher: "equals"
+    value: "APPLIED"
+
+  - id: A007
+    says: "A successful rule has no failure reason"
+    block: "should transition ExecutedRule to APPLIED when all actions succeed"
+    target: "prisma.executedRule.update.data.reason"
+    matcher: "not_equals"
+    value: "One or more scheduled actions failed"
+
+  - id: A008
+    says: "The rule stays in progress while actions are still pending"
+    block: "should not update ExecutedRule status when actions are still pending"
+    target: "prisma.executedRule.update"
+    matcher: "not_equals"
+    value: "called"
+
+  - id: A009
+    says: "A failed action still reports failure to the caller"
+    block: "should transition ExecutedRule to ERROR when last action fails"
+    target: "result.success"
+    matcher: "equals"
+    value: false
+
+  - id: A010
+    says: "The action itself is correctly marked as failed in the database"
+    block: "should transition ExecutedRule to ERROR when last action fails"
+    target: "prisma.scheduledAction.update.data.status"
+    matcher: "equals"
+    value: "FAILED"
+
+file_changes:
+  - path: "apps/web/utils/scheduled-actions/executor.ts"
+    action: modify
+  - path: "apps/web/utils/scheduled-actions/executor.test.ts"
+    action: modify
