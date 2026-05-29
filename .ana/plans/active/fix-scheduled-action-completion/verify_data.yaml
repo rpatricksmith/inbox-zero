@@ -1,0 +1,35 @@
+schema: 1
+findings:
+  - category: code
+    summary: "checkAndCompleteExecutedRule failure after markActionFailed replaces original error"
+    file: "apps/web/utils/scheduled-actions/executor.ts"
+    line: 98
+    severity: risk
+    suggested_action: monitor
+    related_assertions: ["A001"]
+  - category: test
+    summary: "A008 test does not verify failed-count query was skipped when pending > 0"
+    file: "apps/web/utils/scheduled-actions/executor.test.ts"
+    line: 700
+    severity: debt
+    suggested_action: accept
+    related_assertions: ["A008"]
+  - category: test
+    summary: "A007 relies on implicit toHaveBeenCalledWith shape matching rather than explicit reason assertion"
+    file: "apps/web/utils/scheduled-actions/executor.test.ts"
+    line: 693
+    severity: observation
+    suggested_action: accept
+    related_assertions: ["A007"]
+  - category: test
+    summary: "Existing success test uses mockResolvedValue(0) which silently handles the new second count call"
+    file: "apps/web/utils/scheduled-actions/executor.test.ts"
+    line: 102
+    severity: observation
+    suggested_action: accept
+  - category: code
+    summary: "No guard for null executedRuleId in checkAndCompleteExecutedRule"
+    file: "apps/web/utils/scheduled-actions/executor.ts"
+    line: 279
+    severity: observation
+    suggested_action: monitor
